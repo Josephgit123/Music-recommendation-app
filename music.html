@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Recommendation</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #results img { width: 100px; height: 100px; margin: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Music Recommendation App 🎵</h1>
+    <label for="genre">Choose Genre:</label>
+    <select id="genre">
+        <option value="pop">Pop</option>
+        <option value="rock">Rock</option>
+        <option value="hip-hop">Hip-Hop</option>
+        <option value="jazz">Jazz</option>
+        <option value="classical">Classical</option>
+    </select>
+    <button onclick="getRecommendations()">Get Songs</button>
+
+    <div id="results"></div>
+
+    <script>
+        function getRecommendations() {
+            let genre = document.getElementById("genre").value;
+            fetch(`/recommend?genre=${genre}`)
+            .then(response => response.json())
+            .then(data => {
+                let resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
+                data.forEach(song => {
+                    resultsDiv.innerHTML += `
+                        <div>
+                            <img src="${song.image}" alt="Album Art">
+                            <p><strong>${song.name}</strong> by ${song.artist}</p>
+                            <a href="${song.url}" target="_blank">Listen on Spotify</a>
+                        </div>
+                    `;
+                });
+            });
+        }
+    </script>
+
+</body>
+</html>
